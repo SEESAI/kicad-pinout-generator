@@ -1,7 +1,10 @@
 # Mods with respect to Original
-Added Value and Footprint name to CSV and List outputs
-Automatically saves to file
-Defaults to CSV output
+* Added Value and Footprint name to CSV and List outputs
+* Automatically saves to file if CSV and List selected
+* Defaults to CSV output
+* If no components are selected it outputs it generates a csv file with the pinouts of all the connectors (without having to select all the connectors individually). 
+This assumes that all connectors have reference J (which is the standard).
+* If components are selected it behaves like it used to
 
 This is an installation hack:
 Copy or clone to 3rdparty/plugins then move the contents of subfolder resources to 3rdparty/resources under a new folder with the same folder name as repo
