@@ -130,20 +130,39 @@ class PinoutGenerator(pcbnew.ActionPlugin):
             output_formater = self.pdc_format
 
         # checks for format n
-        for component in self.footprint_selection:
-            output += output_formater(component)
+        # Edu mod
+        if len(self.footprint_selection ) < 1:
+            print("No selection")
+            wx.MessageBox("Nothing selected, returning all connectors as csv")
+            # Assume we want all connectors
+            for component in pcbnew.GetBoard().GetFootprints():
+                if component.GetReference().lower().startswith("j"):
+                    output_formater = self.csv_format
+                    output += output_formater(component)
+        else:
+            for component in self.footprint_selection:
+                output += output_formater(component)
         self.set_result(output)
 
-    def csv_format(self, component, sep=",", quote="\""):
+    def csv_format(self, component, sep=",", quote=""):
         output = ""
         pinout = get_pins(component)
         for pad in pinout:
-            if len(self.footprint_selection) > 1:
-                output += quote + escape_csv(component.GetReference(),sep) + quote + sep 
+            output += (quote + escape_csv(component.GetReference(),sep) + quote + sep +
+                                   quote + escape_csv(component.GetValue(), sep) + quote + sep +
+                                   quote + escape_csv(component.GetFPIDAsString(), sep) + quote + sep)
             output += (quote + escape_csv(pad.GetNumber(),sep) + quote + sep + quote + 
                 escape_csv(pad.GetPinFunction(),sep) + quote + sep + quote +  
                 escape_csv(get_pin_name_unless_NC(pad),sep) + quote + "\n")
+
+        board = pcbnew.GetBoard()
+        #project_dir = os.path.dirname(board.GetFileName())
+        filename_pinout_csv = os.path.splitext(board.GetFileName())[0] + "_pinout.csv"
+        #with open(os.path.join(project_dir, 'Connector_Pinout.csv'), 'w') as f:
+        with open(filename_pinout_csv, 'w') as f:
+            f.write(output)
         return output
+
 
     def list_format(self, component):
         return self.csv_format(component, "\t", "")
@@ -289,9 +308,9 @@ class PinoutGenerator(pcbnew.ActionPlugin):
         #     pass
 
         # Check selection len
-        if len(self.footprint_selection ) < 1:
-            wx.MessageBox("Select at least one component!")
-            return
+        #if len(self.footprint_selection ) < 1:
+        #    wx.MessageBox("Select at least one bloody coddmponent 12!")
+        #    return
 
         # WX setup
         dialog = PinoutDialog(None)
