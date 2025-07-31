@@ -3,6 +3,9 @@ Added Value and Footprint name to CSV and List outputs
 Automatically saves to file
 Defaults to CSV output
 
+This is an installation hack:
+Copy or clone to 3rdparty/plugins then move the contents of subfolder resources to 3rdparty/resources under a new folder with the same folder name as repo
+
 # KiCad Pinout Generator
 
 **Compatibility:** KiCad 6.0, KiCad 7.0.
