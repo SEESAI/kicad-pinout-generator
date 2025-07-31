@@ -1,3 +1,8 @@
+# Mods with respect to Original
+Added Value and Footprint name to CSV and List outputs
+Automatically saves to file
+Defaults to CSV output
+
 # KiCad Pinout Generator
 
 **Compatibility:** KiCad 6.0, KiCad 7.0.
